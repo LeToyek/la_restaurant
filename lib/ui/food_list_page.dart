@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:la_restaurant/resto_provider.dart';
 import 'package:la_restaurant/widgets/card_foods.dart';
 import 'package:la_restaurant/widgets/platform_widget.dart';
+import 'package:la_restaurant/widgets/search_widge.dart';
 import 'package:provider/provider.dart';
 
 class FoodListPage extends StatelessWidget {
@@ -51,6 +52,7 @@ class FoodListPage extends StatelessWidget {
               children: [
                 Text('Find Your Best Restaurant',
                     style: Theme.of(context).textTheme.headline4),
+                SearchBar(),
                 _buildList(),
               ],
             ),
