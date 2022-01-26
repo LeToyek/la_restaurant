@@ -16,6 +16,7 @@ class FoodListPage extends StatelessWidget {
         );
       } else if (state.state == ResultState.HasData) {
         return ListView.builder(
+            physics: NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             itemCount: state.result.restaurants.length,
             itemBuilder: (context, index) {
@@ -35,11 +36,27 @@ class FoodListPage extends StatelessWidget {
   }
 
   Widget _buildAndroid(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        actions: [Icon(Icons.search)],
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          elevation: 0,
+          backgroundColor: Colors.white,
+          leading: Icon(Icons.menu),
+        ),
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Find Your Best Restaurant',
+                    style: Theme.of(context).textTheme.headline4),
+                _buildList(),
+              ],
+            ),
+          ),
+        ),
       ),
-      body: _buildList(),
     );
   }
 
