@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:la_restaurant/resto_provider.dart';
+import 'package:la_restaurant/data/providers/resto_provider.dart';
+import 'package:la_restaurant/style/color.dart';
 import 'package:la_restaurant/widgets/card_foods.dart';
+import 'package:la_restaurant/widgets/main_title.dart';
 import 'package:la_restaurant/widgets/platform_widget.dart';
-import 'package:la_restaurant/widgets/search_widge.dart';
+import 'package:la_restaurant/ui/search_page.dart';
 import 'package:provider/provider.dart';
 
 class FoodListPage extends StatelessWidget {
@@ -39,23 +41,21 @@ class FoodListPage extends StatelessWidget {
   Widget _buildAndroid(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          elevation: 0,
-          backgroundColor: Colors.white,
-          leading: Icon(Icons.menu),
-        ),
         body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('Find Your Best Restaurant',
-                    style: Theme.of(context).textTheme.headline4),
-                SearchBar(),
-                _buildList(),
-              ],
-            ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              MainTitle(),
+              SizedBox(
+                height: 16,
+              ),
+              // Text('Find Your Best Restaurant',
+              //     style: Theme.of(context).textTheme.headline4),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: _buildList(),
+              ),
+            ],
           ),
         ),
       ),

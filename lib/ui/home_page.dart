@@ -2,10 +2,12 @@
 
 import 'dart:io';
 
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:la_restaurant/data/api/api_service.dart';
-import 'package:la_restaurant/resto_provider.dart';
+import 'package:la_restaurant/data/providers/resto_provider.dart';
+import 'package:la_restaurant/style/color.dart';
 import 'package:la_restaurant/ui/food_list_page.dart';
 import 'package:la_restaurant/ui/profile_page.dart';
 import 'package:la_restaurant/widgets/platform_widget.dart';
@@ -28,13 +30,11 @@ class _HomePageState extends State<HomePage> {
     ProfilePage()
   ];
 
-  List<BottomNavigationBarItem> bottomNavBarItem = [
-    BottomNavigationBarItem(
-        icon: Icon(Platform.isIOS ? CupertinoIcons.home : Icons.home),
-        label: 'home'),
-    BottomNavigationBarItem(
-        icon: Icon(Platform.isIOS ? CupertinoIcons.person : Icons.person),
-        label: 'profile')
+  List<Widget> bottomNavBarItem = [
+    Icon(Platform.isIOS ? CupertinoIcons.home : Icons.home,
+        color: Colors.white),
+    Icon(Platform.isIOS ? CupertinoIcons.person : Icons.person,
+        color: Colors.white),
   ];
 
   void _onBottomNavBarTapped(int index) {
@@ -46,25 +46,19 @@ class _HomePageState extends State<HomePage> {
   Widget _buildAndroid(BuildContext context) {
     return Scaffold(
       body: _listWidget[_bottomNavIndex],
-      bottomNavigationBar: BottomNavigationBar(
-          currentIndex: _bottomNavIndex,
+      bottomNavigationBar: CurvedNavigationBar(
+          color: kPrimaryColor,
+          buttonBackgroundColor: kPrimaryColor,
+          backgroundColor: Colors.transparent,
+          height: 48,
           items: bottomNavBarItem,
           onTap: _onBottomNavBarTapped),
     );
   }
 
-  Widget _buildIOS(BuildContext context) {
-    return CupertinoTabScaffold(
-        tabBar: CupertinoTabBar(
-          items: bottomNavBarItem,
-        ),
-        tabBuilder: (context, index) {
-          return _listWidget[index];
-        });
-  }
-
   @override
   Widget build(BuildContext context) {
-    return PlatformWidget(androidBuilder: _buildAndroid, iosBuilder: _buildIOS);
+    return PlatformWidget(
+        androidBuilder: _buildAndroid, iosBuilder: _buildAndroid);
   }
 }

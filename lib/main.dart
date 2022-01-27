@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:la_restaurant/ui/home_page.dart';
+import 'package:la_restaurant/ui/search_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,7 +18,11 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.orange,
       ),
       initialRoute: HomePage.routeName,
-      routes: {HomePage.routeName: (context) => HomePage()},
+      routes: {
+        HomePage.routeName: (context) => HomePage(),
+        SearchPage.routeName: (context) => SearchPage()
+      },
+      debugShowCheckedModeBanner: false,
     );
   }
 }
