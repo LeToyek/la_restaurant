@@ -45,14 +45,23 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildAndroid(BuildContext context) {
     return Scaffold(
-      body: _listWidget[_bottomNavIndex],
-      bottomNavigationBar: CurvedNavigationBar(
-          color: kPrimaryColor,
-          buttonBackgroundColor: kPrimaryColor,
-          backgroundColor: Colors.transparent,
-          height: 48,
-          items: bottomNavBarItem,
-          onTap: _onBottomNavBarTapped),
+      body: Stack(
+        children: [
+          _listWidget[_bottomNavIndex],
+          Positioned(
+            bottom: 0,
+            right: 0,
+            left: 0,
+            child: CurvedNavigationBar(
+                color: kPrimaryColor,
+                buttonBackgroundColor: kPrimaryColor,
+                backgroundColor: Colors.transparent,
+                height: 48,
+                items: bottomNavBarItem,
+                onTap: _onBottomNavBarTapped),
+          ),
+        ],
+      ),
     );
   }
 

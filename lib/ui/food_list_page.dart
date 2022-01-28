@@ -55,6 +55,9 @@ class FoodListPage extends StatelessWidget {
                 padding: const EdgeInsets.all(16.0),
                 child: _buildList(),
               ),
+              SizedBox(
+                height: 16,
+              )
             ],
           ),
         ),

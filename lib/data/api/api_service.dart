@@ -21,7 +21,7 @@ class ApiService {
     if (!await DataConnectionChecker().hasConnection) {
       return Future.error('No Internet Connection');
     }
-    var response = await http.get(Uri.parse(_baseUrl + '/search?q=${query}'));
+    var response = await http.get(Uri.parse(_baseUrl + '/search?q=$query'));
     Map<String, dynamic> json = jsonDecode(response.body);
     var restaurants = List.from(json['restaurants']);
     return List.from(
