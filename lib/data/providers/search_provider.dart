@@ -12,7 +12,7 @@ class SearchProvider extends ChangeNotifier {
   late ResultState _state;
   String _message = '';
 
-  List<Restaurant> get restaurant => restaurant;
+  List<Restaurant> get restaurants => _restaurants;
   ResultState get state => _state;
   String get message => _message;
 
