@@ -19,45 +19,53 @@ class _SearchPageState extends State<SearchPage> {
       child: Scaffold(
         body: ChangeNotifierProvider<SearchProvider>(
           create: (context) => SearchProvider(apiService: ApiService()),
-          child: Column(
-            children: [
-              Consumer<SearchProvider>(builder: (context, state, _) {
-                return TextField(
-                  autofocus: true,
-                  onSubmitted: state.searchRestaurant,
-                  decoration: InputDecoration(
-                      prefixIcon: Icon(Icons.search),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(32)),
-                      isDense: true),
-                );
-              }),
-              Consumer<SearchProvider>(builder: (context, state, _) {
-                if (state.state == ResultState.HasData) {
-                  return ListView.builder(
-                      itemCount: state.restaurants.length,
-                      shrinkWrap: true,
-                      itemBuilder: (context, index) {
-                        var restaurant = state.restaurants[index];
-                        return CardFoods(food: restaurant);
-                      });
-                } else if (state.state == ResultState.Loading) {
-                  return Center(
-                    child: CircularProgressIndicator(),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Consumer<SearchProvider>(builder: (context, state, _) {
+                  return TextField(
+                    autofocus: true,
+                    onSubmitted: state.searchRestaurant,
+                    decoration: InputDecoration(
+                        prefixIcon: Icon(Icons.search),
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(32)),
+                        isDense: true),
                   );
-                } else if (state.state == ResultState.NoData) {
-                  return Center(
-                    child: Text(state.message),
-                  );
-                } else {
-                  return Center(
-                    child: Column(
-                      children: [Text('Search by inputing name or menu above')],
-                    ),
-                  );
-                }
-              })
-            ],
+                }),
+                SizedBox(
+                  height: 16,
+                ),
+                Consumer<SearchProvider>(builder: (context, state, _) {
+                  if (state.state == ResultState.HasData) {
+                    return ListView.builder(
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: state.restaurants.length,
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          var restaurant = state.restaurants[index];
+                          return CardFoods(food: restaurant);
+                        });
+                  } else if (state.state == ResultState.Loading) {
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  } else if (state.state == ResultState.NoData) {
+                    return Center(
+                      child: Text(state.message),
+                    );
+                  } else {
+                    return Center(
+                      child: Column(
+                        children: [
+                          Text('Search by inputing name or menu above')
+                        ],
+                      ),
+                    );
+                  }
+                })
+              ],
+            ),
           ),
         ),
       ),

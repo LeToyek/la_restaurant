@@ -4,12 +4,12 @@ import 'package:la_restaurant/data/model/foods.dart';
 import 'package:la_restaurant/data/providers/resto_provider.dart';
 
 class SearchProvider extends ChangeNotifier {
-  final ApiService apiService;
+  ApiService apiService;
 
   SearchProvider({required this.apiService});
 
   late List<Restaurant> _restaurants;
-  late ResultState _state;
+  late ResultState _state = ResultState.NoData;
   String _message = '';
 
   List<Restaurant> get restaurants => _restaurants;
