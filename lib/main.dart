@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:la_restaurant/data/model/restaurant.dart';
+import 'package:la_restaurant/ui/detail_page.dart';
 import 'package:la_restaurant/ui/home_page.dart';
 import 'package:la_restaurant/ui/search_page.dart';
 
@@ -17,10 +19,12 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.orange,
       ),
-      initialRoute: HomePage.routeName,
+      initialRoute: DetailPage.routeName,
       routes: {
         HomePage.routeName: (context) => HomePage(),
-        SearchPage.routeName: (context) => SearchPage()
+        SearchPage.routeName: (context) => SearchPage(),
+        DetailPage.routeName: (context) => DetailPage(
+            food: ModalRoute.of(context)?.settings.arguments as Restaurant)
       },
       debugShowCheckedModeBanner: false,
     );

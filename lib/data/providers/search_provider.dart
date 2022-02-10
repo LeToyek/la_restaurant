@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:la_restaurant/data/api/api_service.dart';
-import 'package:la_restaurant/data/model/foods.dart';
+import 'package:la_restaurant/data/model/restaurant.dart';
 import 'package:la_restaurant/data/providers/resto_provider.dart';
 
 class SearchProvider extends ChangeNotifier {
@@ -13,12 +13,10 @@ class SearchProvider extends ChangeNotifier {
   late List<Restaurant> _restaurants;
   late ResultState _state = ResultState.NoData;
   String _message = '';
-  late Image _image = Image.asset('');
 
   List<Restaurant> get restaurants => _restaurants;
   ResultState get state => _state;
   String get message => _message;
-  Image get image => _image;
 
   Future<dynamic> searchRestaurant(String query) async {
     try {

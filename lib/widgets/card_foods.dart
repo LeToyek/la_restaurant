@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:la_restaurant/data/image_url.dart';
-import 'package:la_restaurant/data/model/foods.dart';
+import 'package:la_restaurant/data/model/restaurant.dart';
 
 class CardFoods extends StatelessWidget {
   final Restaurant food;

@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:la_restaurant/data/api/api_service.dart';
-import 'package:la_restaurant/data/model/foods.dart';
+import 'package:la_restaurant/data/model/restaurant.dart';
 
 enum ResultState { Loading, NoData, HasData, Error }
 

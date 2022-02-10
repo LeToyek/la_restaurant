@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:la_restaurant/data/api/api_service.dart';
-import 'package:la_restaurant/data/model/foods.dart';
+import 'package:la_restaurant/data/model/restaurant.dart';
 import 'package:la_restaurant/data/providers/resto_provider.dart';
 import 'package:la_restaurant/data/providers/search_provider.dart';
 import 'package:la_restaurant/widgets/card_foods.dart';
