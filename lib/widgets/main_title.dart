@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:la_restaurant/data/providers/detail_provider.dart';
+import 'package:la_restaurant/data/providers/resto_provider.dart';
 import 'package:la_restaurant/style/color.dart';
 import 'package:la_restaurant/ui/search_page.dart';
+import 'package:provider/provider.dart';
 
 class MainTitle extends StatelessWidget {
   const MainTitle({Key? key}) : super(key: key);

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:la_restaurant/data/model/restaurant.dart';
+import 'package:la_restaurant/data/model/restaurant_detail.dart';
 import 'package:la_restaurant/ui/detail_page.dart';
 import 'package:la_restaurant/ui/home_page.dart';
 import 'package:la_restaurant/ui/search_page.dart';

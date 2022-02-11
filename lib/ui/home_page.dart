@@ -6,6 +6,7 @@ import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:la_restaurant/data/api/api_service.dart';
+import 'package:la_restaurant/data/providers/detail_provider.dart';
 import 'package:la_restaurant/data/providers/resto_provider.dart';
 import 'package:la_restaurant/style/color.dart';
 import 'package:la_restaurant/ui/food_list_page.dart';
@@ -23,8 +24,13 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _bottomNavIndex = 0;
   List<Widget> _listWidget = [
-    ChangeNotifierProvider(
-      create: (context) => RestoProvider(apiService: ApiService()),
+    MultiProvider(
+      providers: [
+        Provider<RestoProvider>(
+            create: (context) => RestoProvider(apiService: ApiService())),
+        Provider<DetailProvider>(
+            create: (context) => DetailProvider(apiService: ApiService()))
+      ],
       child: FoodListPage(),
     ),
     ProfilePage()
