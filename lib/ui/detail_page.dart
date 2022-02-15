@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:la_restaurant/data/api/api_service.dart';
 import 'package:la_restaurant/data/image_url.dart';
+import 'package:la_restaurant/data/model/menu.dart';
 import 'package:la_restaurant/data/model/restaurant.dart';
 import 'package:la_restaurant/data/providers/detail_provider.dart';
 import 'package:la_restaurant/data/providers/resto_provider.dart';
+import 'package:la_restaurant/style/color.dart';
 import 'package:provider/provider.dart';
 
 class DetailPage extends StatefulWidget {
@@ -22,6 +24,7 @@ class _DetailPageState extends State<DetailPage> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    bool _isFavorite = false;
     return Scaffold(
       body: ChangeNotifierProvider.value(
         value: DetailProvider(
@@ -30,20 +33,70 @@ class _DetailPageState extends State<DetailPage> {
         child: Consumer<DetailProvider>(
           builder: ((context, state, _) {
             if (state.state == ResultState.Loading) {
-              return CircularProgressIndicator();
+              return Center(child: CircularProgressIndicator());
             } else if (state.state == ResultState.HasData) {
               return SafeArea(
-                  child: Column(
-                children: [
-                  Container(
-                    height: size.height * 0.3,
-                    child: Container(
-                      height: size.height * 0.3 - 16,
-                      child: Image.network(
-                          ImageUrl.Large(state.restaurantDetail.pictureId)),
+                  child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Container(
+                      child: Stack(
+                        children: [
+                          Column(
+                            children: [
+                              ClipRRect(
+                                borderRadius: BorderRadius.vertical(
+                                    bottom: Radius.circular(16)),
+                                child: Image.network(
+                                  ImageUrl.Large(
+                                      state.restaurantDetail.pictureId),
+                                  width: double.infinity,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 24,
+                              )
+                            ],
+                          ),
+                          Positioned(
+                            bottom: 0,
+                            right: 24,
+                            child: Container(
+                                padding: EdgeInsets.all(4),
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Colors.white),
+                                child: IconButton(
+                                    onPressed: () {
+                                      _isFavorite = true;
+                                    },
+                                    icon: _isFavorite
+                                        ? Icon(
+                                            Icons.favorite_border,
+                                            color: kPrimaryColor,
+                                            size: 32,
+                                          )
+                                        : Icon(
+                                            Icons.favorite_border_outlined,
+                                            color: kPrimaryColor,
+                                            size: 32,
+                                          ))),
+                          )
+                        ],
+                      ),
                     ),
-                  )
-                ],
+                    Text(state.restaurantDetail.name),
+                    Row(
+                      children: [
+                        Icon(Icons.location_pin),
+                        Text(state.restaurantDetail.address),
+                      ],
+                    ),
+                    Text(state.restaurantDetail.description),
+                    Image.network(
+                        ImageUrl.small(state.restaurantDetail.pictureId))
+                  ],
+                ),
               ));
             } else if (state.state == ResultState.NoData) {
               return Center(
