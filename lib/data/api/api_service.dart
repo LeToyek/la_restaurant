@@ -33,7 +33,10 @@ class ApiService {
     if (!await DataConnectionChecker().hasConnection) {
       return Future.error('No Internet Connection');
     }
-    var response = await http.get(Uri.parse(_baseUrl + '/detail/:id'));
-    return RestaurantDetail.fromJson(jsonDecode(response.body));
+    var response = await http.get(Uri.parse(_baseUrl + '/detail/$id'));
+    Map<String, dynamic> json = jsonDecode(response.body);
+    var restaurant = json['restaurant'];
+    print("----------------->" + json['restaurant'].toString());
+    return RestaurantDetail.fromJson(restaurant);
   }
 }

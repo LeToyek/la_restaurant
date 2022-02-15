@@ -20,12 +20,11 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.orange,
       ),
-      initialRoute: DetailPage.routeName,
+      initialRoute: HomePage.routeName,
       routes: {
         HomePage.routeName: (context) => HomePage(),
         SearchPage.routeName: (context) => SearchPage(),
-        DetailPage.routeName: (context) => DetailPage(
-            food: ModalRoute.of(context)?.settings.arguments as Restaurant)
+        DetailPage.routeName: (context) => DetailPage()
       },
       debugShowCheckedModeBanner: false,
     );

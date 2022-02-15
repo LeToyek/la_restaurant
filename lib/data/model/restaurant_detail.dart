@@ -13,21 +13,20 @@ RestaurantDetail foodDetailFromJson(String str) =>
     RestaurantDetail.fromJson(json.decode(str));
 
 class RestaurantDetail {
-  RestaurantDetail({
-    required this.restaurant,
-    required this.menus,
-    required this.customerReviews,
-    required this.categories,
-  });
+  RestaurantDetail(
+      {required this.menus,
+      required this.customerReviews,
+      required this.categories,
+      required this.pictureId});
 
   Menus menus;
   List<Category> categories;
-  Restaurant restaurant;
+  String pictureId;
   List<CustomerReview> customerReviews;
 
   factory RestaurantDetail.fromJson(Map<String, dynamic> json) =>
       RestaurantDetail(
-        restaurant: Restaurant.fromJson(json["restaurant"]),
+        pictureId: json['pictureId'],
         categories: List<Category>.from(
             json["categories"].map((x) => Category.fromJson(x))),
         menus: Menus.fromJson(json["menus"]),

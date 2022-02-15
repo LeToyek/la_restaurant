@@ -23,16 +23,11 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _bottomNavIndex = 0;
+
   List<Widget> _listWidget = [
-    MultiProvider(
-      providers: [
-        Provider<RestoProvider>(
-            create: (context) => RestoProvider(apiService: ApiService())),
-        Provider<DetailProvider>(
-            create: (context) => DetailProvider(apiService: ApiService()))
-      ],
-      child: FoodListPage(),
-    ),
+    ChangeNotifierProvider<RestoProvider>(
+        create: (context) => RestoProvider(apiService: ApiService()),
+        child: FoodListPage()),
     ProfilePage()
   ];
 
