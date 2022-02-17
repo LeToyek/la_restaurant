@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:la_restaurant/data/api/api_service.dart';
 import 'package:la_restaurant/data/image_url.dart';
 import 'package:la_restaurant/data/model/menu.dart';
 import 'package:la_restaurant/data/model/restaurant.dart';
+import 'package:la_restaurant/data/model/restaurant_detail.dart';
 import 'package:la_restaurant/data/providers/detail_provider.dart';
 import 'package:la_restaurant/data/providers/resto_provider.dart';
 import 'package:la_restaurant/style/color.dart';
+import 'package:la_restaurant/widgets/card_menu.dart';
+import 'package:la_restaurant/widgets/card_review.dart';
 import 'package:provider/provider.dart';
 
 class DetailPage extends StatefulWidget {
@@ -25,6 +29,10 @@ class _DetailPageState extends State<DetailPage> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     bool _isFavorite = false;
+    var smallHeadline = Theme.of(context).textTheme.headline6;
+    var gap = SizedBox(
+      height: 8,
+    );
     return Scaffold(
       body: ChangeNotifierProvider.value(
         value: DetailProvider(
@@ -35,9 +43,11 @@ class _DetailPageState extends State<DetailPage> {
             if (state.state == ResultState.Loading) {
               return Center(child: CircularProgressIndicator());
             } else if (state.state == ResultState.HasData) {
+              var stater = state.restaurantDetail;
               return SafeArea(
                   child: SingleChildScrollView(
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
                       child: Stack(
@@ -68,11 +78,11 @@ class _DetailPageState extends State<DetailPage> {
                                     color: Colors.white),
                                 child: IconButton(
                                     onPressed: () {
-                                      _isFavorite = true;
+                                      _isFavorite = !_isFavorite;
                                     },
                                     icon: _isFavorite
                                         ? Icon(
-                                            Icons.favorite_border,
+                                            Icons.favorite,
                                             color: kPrimaryColor,
                                             size: 32,
                                           )
@@ -85,16 +95,82 @@ class _DetailPageState extends State<DetailPage> {
                         ],
                       ),
                     ),
-                    Text(state.restaurantDetail.name),
-                    Row(
-                      children: [
-                        Icon(Icons.location_pin),
-                        Text(state.restaurantDetail.address),
-                      ],
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            state.restaurantDetail.name,
+                            style: Theme.of(context).textTheme.headline5,
+                          ),
+                          gap,
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.location_pin,
+                                size: 16,
+                              ),
+                              Text(state.restaurantDetail.address),
+                            ],
+                          ),
+                          RatingBarIndicator(
+                            itemBuilder: ((context, index) => Icon(
+                                  Icons.star,
+                                  color: Colors.amber,
+                                )),
+                            itemCount: 5,
+                            rating: stater.rating,
+                            direction: Axis.horizontal,
+                            itemSize: 16,
+                          ),
+                          SizedBox(
+                            height: 16,
+                          ),
+                          Text(
+                            'Deskripsi',
+                            style: smallHeadline,
+                          ),
+                          gap,
+                          Text(state.restaurantDetail.description),
+                          gap,
+                          Text(
+                            'Foods',
+                            style: smallHeadline,
+                          ),
+                          ListView(
+                              physics: NeverScrollableScrollPhysics(),
+                              scrollDirection: Axis.vertical,
+                              shrinkWrap: true,
+                              children: stater.menus.foods
+                                  .map((e) => CardMenu(name: e.name))
+                                  .toList()),
+                          Text(
+                            'Drinks',
+                            style: smallHeadline,
+                          ),
+                          ListView(
+                            physics: NeverScrollableScrollPhysics(),
+                            scrollDirection: Axis.vertical,
+                            shrinkWrap: true,
+                            children: stater.menus.drinks
+                                .map((e) => CardMenu(name: e.name))
+                                .toList(),
+                          ),
+                          ListView(
+                            physics: NeverScrollableScrollPhysics(),
+                            scrollDirection: Axis.vertical,
+                            shrinkWrap: true,
+                            children: stater.customerReviews
+                                .map((e) => CardReview(
+                                    name: e.name,
+                                    review: e.review,
+                                    date: e.date))
+                                .toList(),
+                          )
+                        ],
+                      ),
                     ),
-                    Text(state.restaurantDetail.description),
-                    Image.network(
-                        ImageUrl.small(state.restaurantDetail.pictureId))
                   ],
                 ),
               ));
