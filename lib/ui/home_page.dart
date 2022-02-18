@@ -27,9 +27,7 @@ class _HomePageState extends State<HomePage> {
   int _bottomNavIndex = 0;
 
   List<Widget> _listWidget = [
-    ChangeNotifierProvider<RestoProvider>(
-        create: (context) => RestoProvider(apiService: ApiService()),
-        child: FoodListPage()),
+    FoodListPage(),
     FavoritePage(),
     SettingPage(),
   ];

@@ -17,25 +17,16 @@ class RestaurantDetail {
       {required this.menus,
       required this.customerReviews,
       required this.categories,
-      required this.pictureId,
-      required this.name,
-      required this.address,
-      required this.description,
-      required this.rating});
+      required this.restaurant});
 
   Menus menus;
   List<Category> categories;
-  String pictureId, name, address, description;
-  double rating;
+  Restaurant restaurant;
   List<CustomerReview> customerReviews;
 
   factory RestaurantDetail.fromJson(Map<String, dynamic> json) =>
       RestaurantDetail(
-        rating: json['rating'],
-        name: json['name'],
-        description: json['description'],
-        address: json['address'],
-        pictureId: json['pictureId'],
+        restaurant: Restaurant.fromJson(json),
         categories: List<Category>.from(
             json["categories"].map((x) => Category.fromJson(x))),
         menus: Menus.fromJson(json["menus"]),

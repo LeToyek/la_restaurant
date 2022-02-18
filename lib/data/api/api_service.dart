@@ -8,7 +8,7 @@ import 'package:la_restaurant/data/model/restaurant.dart';
 import 'package:la_restaurant/data/model/restaurant_detail.dart';
 
 class ApiService {
-  static final String _baseUrl = 'https://restaurant-api.dicoding.dev';
+  static const String _baseUrl = 'https://restaurant-api.dicoding.dev';
 
   Future<FoodResult> getListOfRestaurant() async {
     if (!await DataConnectionChecker().hasConnection) {

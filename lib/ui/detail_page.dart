@@ -5,6 +5,7 @@ import 'package:la_restaurant/data/image_url.dart';
 import 'package:la_restaurant/data/model/menu.dart';
 import 'package:la_restaurant/data/model/restaurant.dart';
 import 'package:la_restaurant/data/model/restaurant_detail.dart';
+import 'package:la_restaurant/data/providers/DB_provider.dart';
 import 'package:la_restaurant/data/providers/detail_provider.dart';
 import 'package:la_restaurant/data/providers/resto_provider.dart';
 import 'package:la_restaurant/style/color.dart';
@@ -27,17 +28,14 @@ class _DetailPageState extends State<DetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    bool _isFavorite = false;
     var smallHeadline = Theme.of(context).textTheme.headline6;
+    var favRestoId = ModalRoute.of(context)?.settings.arguments as String;
     var gap = SizedBox(
       height: 8,
     );
     return Scaffold(
       body: ChangeNotifierProvider.value(
-        value: DetailProvider(
-            apiService: ApiService(),
-            id: ModalRoute.of(context)?.settings.arguments as String),
+        value: DetailProvider(apiService: ApiService(), id: favRestoId),
         child: Consumer<DetailProvider>(
           builder: ((context, state, _) {
             if (state.state == ResultState.Loading) {
@@ -58,8 +56,8 @@ class _DetailPageState extends State<DetailPage> {
                                 borderRadius: BorderRadius.vertical(
                                     bottom: Radius.circular(16)),
                                 child: Image.network(
-                                  ImageUrl.Large(
-                                      state.restaurantDetail.pictureId),
+                                  ImageUrl.Large(state
+                                      .restaurantDetail.restaurant.pictureId),
                                   width: double.infinity,
                                 ),
                               ),
@@ -71,26 +69,44 @@ class _DetailPageState extends State<DetailPage> {
                           Positioned(
                             bottom: 0,
                             right: 24,
-                            child: Container(
-                                padding: EdgeInsets.all(4),
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: Colors.white),
-                                child: IconButton(
-                                    onPressed: () {
-                                      _isFavorite = !_isFavorite;
-                                    },
-                                    icon: _isFavorite
-                                        ? Icon(
-                                            Icons.favorite,
-                                            color: kPrimaryColor,
-                                            size: 32,
-                                          )
-                                        : Icon(
-                                            Icons.favorite_border_outlined,
-                                            color: kPrimaryColor,
-                                            size: 32,
-                                          ))),
+                            child: Consumer<DBProvider>(
+                              builder: (context, value, child) {
+                                return FutureBuilder(
+                                    future: value.isFavorite(favRestoId),
+                                    builder: ((context, snapshot) {
+                                      if (snapshot.hasData) {
+                                        final _isFavorite = snapshot.hasData;
+                                        return Container(
+                                            padding: EdgeInsets.all(4),
+                                            decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                color: Colors.white),
+                                            child: IconButton(
+                                                onPressed: () {
+                                                  _isFavorite
+                                                      ? value.deleteFavorite(
+                                                          favRestoId)
+                                                      : value.addFavorite(
+                                                          stater.restaurant);
+                                                },
+                                                icon: _isFavorite
+                                                    ? Icon(
+                                                        Icons.favorite,
+                                                        color: kPrimaryColor,
+                                                        size: 32,
+                                                      )
+                                                    : Icon(
+                                                        Icons
+                                                            .favorite_border_outlined,
+                                                        color: kPrimaryColor,
+                                                        size: 32,
+                                                      )));
+                                      } else {
+                                        return Container();
+                                      }
+                                    }));
+                              },
+                            ),
                           )
                         ],
                       ),
@@ -101,7 +117,7 @@ class _DetailPageState extends State<DetailPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            state.restaurantDetail.name,
+                            state.restaurantDetail.restaurant.name,
                             style: Theme.of(context).textTheme.headline5,
                           ),
                           gap,
@@ -111,7 +127,7 @@ class _DetailPageState extends State<DetailPage> {
                                 Icons.location_pin,
                                 size: 16,
                               ),
-                              Text(state.restaurantDetail.address),
+                              Text(state.restaurantDetail.restaurant.city),
                             ],
                           ),
                           RatingBarIndicator(
@@ -120,7 +136,7 @@ class _DetailPageState extends State<DetailPage> {
                                   color: Colors.amber,
                                 )),
                             itemCount: 5,
-                            rating: stater.rating,
+                            rating: stater.restaurant.rating,
                             direction: Axis.horizontal,
                             itemSize: 16,
                           ),
@@ -132,7 +148,7 @@ class _DetailPageState extends State<DetailPage> {
                             style: smallHeadline,
                           ),
                           gap,
-                          Text(state.restaurantDetail.description),
+                          Text(state.restaurantDetail.restaurant.description),
                           gap,
                           Text(
                             'Foods',
